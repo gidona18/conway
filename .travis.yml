@@ -1,0 +1,22 @@
+language: rust
+
+before_cache:
+  - rm -rf "$TRAVIS_HOME/.cargo/registry/src"
+
+cache:
+  directories:
+    - $TRAVIS_HOME/.cache/sccache
+    - $TRAVIS_HOME/.cargo/
+    - $TRAVIS_HOME/.rustup/
+    - $TRAVIS_HOME/.npm
+    - $TRAVIS_HOME/.nvm
+
+matrix:
+  include:
+    - name: pages
+      rust: stable
+      before_script:
+        - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+        - source ~/.nvm/nvm.sh && nvm install node
+      script:
+        - ls
