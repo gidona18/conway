@@ -3,6 +3,8 @@ mod utils;
 use wasm_bindgen::prelude::*;
 extern crate js_sys;
 
+extern crate web_sys;
+
 extern crate fixedbitset;
 use fixedbitset::FixedBitSet;
 
@@ -11,6 +13,12 @@ use fixedbitset::FixedBitSet;
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+
+macro_rules! log {
+    ( $( $t:tt )* ) => {
+        web_sys::console::log_1(&format!( $( $t )* ).into());
+    };
+}
 
 #[wasm_bindgen]
 pub struct Universe {
@@ -22,6 +30,8 @@ pub struct Universe {
 #[wasm_bindgen]
 impl Universe {
     pub fn new(width: u32, height: u32) -> Self {
+        utils::set_panic_hook();
+
         let size = (width * height) as usize;
         let mut cells = FixedBitSet::with_capacity(size);
 
@@ -75,8 +85,8 @@ impl Universe {
                 let idx = self.get_index(row, col);
                 let cell = self.cells[idx];
                 let live_neighbours = self.live_neighbour_count(row, col);
-                next.set(
-                    idx,
+
+                let next_cell = 
                     match (cell, live_neighbours) {
                         // Rule 1: Any live cell with fewer than two live
                         // neighbours dies, as if caused by underpopulation.
@@ -91,8 +101,8 @@ impl Universe {
                         // neighbours becomes a live cell, as if by reproduction.
                         (false, 3) => true,
                         (otherwise, _) => otherwise,
-                    },
-                );
+                    };
+                next.set(idx, next_cell);
             }
         }
         self.cells = next;
