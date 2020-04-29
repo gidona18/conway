@@ -102,22 +102,21 @@ impl Universe {
                 let cell = self.cells[idx];
                 let live_neighbours = self.live_neighbour_count(row, col);
 
-                let next_cell = 
-                    match (cell, live_neighbours) {
-                        // Rule 1: Any live cell with fewer than two live
-                        // neighbours dies, as if caused by underpopulation.
-                        (true, x) if x < 2 => false,
-                        // Rule 2: Any live cell with two or three live
-                        // neighbours lives on to the next generation.
-                        (true, 2) | (true, 3) => true,
-                        // Rule 3: Any live cell with more than three live
-                        // neighbours dies, as if caused by overpopulation.
-                        (true, x) if x > 3 => false,
-                        // Rule 4: Any dead cell with exactly three live
-                        // neighbours becomes a live cell, as if by reproduction.
-                        (false, 3) => true,
-                        (otherwise, _) => otherwise,
-                    };
+                let next_cell = match (cell, live_neighbours) {
+                    // Rule 1: Any live cell with fewer than two live
+                    // neighbours dies, as if caused by underpopulation.
+                    (true, x) if x < 2 => false,
+                    // Rule 2: Any live cell with two or three live
+                    // neighbours lives on to the next generation.
+                    (true, 2) | (true, 3) => true,
+                    // Rule 3: Any live cell with more than three live
+                    // neighbours dies, as if caused by overpopulation.
+                    (true, x) if x > 3 => false,
+                    // Rule 4: Any dead cell with exactly three live
+                    // neighbours becomes a live cell, as if by reproduction.
+                    (false, 3) => true,
+                    (otherwise, _) => otherwise,
+                };
                 next.set(idx, next_cell);
             }
         }
