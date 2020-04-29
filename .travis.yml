@@ -21,12 +21,10 @@ matrix:
         - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
         - cargo install cargo-generate
       script:
-        - mkdir -p pages
-        - rm -rf ./pages/*
         - wasm-pack build
         - cd www && npm install
         - npm run build
-        - mv ./dist/* ../pages
+        - mv ./dist ../
       deploy:
         provider: pages
         skip_cleanup: true
