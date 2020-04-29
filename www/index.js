@@ -7,9 +7,10 @@ const DEAD_COLOR = "#fdf6e3";
 const ALIVE_COLOR = "#268bd2";
 
 // make the universe
-const universe = Universe.new(128, 128);
-const width = universe.width();
-const height = universe.height();
+const width = Math.floor((window.innerWidth * .75) / CELL_SIZE);
+const height = Math.floor((window.innerHeight * .75)/ CELL_SIZE);
+const universe = Universe.new(width, height);
+
 
 // make the canvas, and add a 1px border around each cell
 const canvas = document.getElementById("game-of-life-canvas")
@@ -35,7 +36,6 @@ const drawGrid = () => {
     // draw
     ctx.stroke();
 }
-
 
 const getIndex = (row, col) => {
     return row * width + col;
