@@ -31,7 +31,7 @@ matrix:
         - mv ./dist/* ../pages
       deploy:
         provider: pages
-        skip_cleanup: true
+        cleanup: false
         github_token: $GITHUB_TOKEN
         local-dir: pages
         keep_history: false
