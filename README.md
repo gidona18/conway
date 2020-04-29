@@ -2,7 +2,7 @@
 
 <div align="center">
   <a href="https://jellowfish.github.io/conway-wasm">
-    <img src="./res/fig.png"/>
+    <img src="./res/gol.gif"/>
   </a>
 </div>
 
