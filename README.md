@@ -6,5 +6,5 @@
   </a>
 </div>
 
-Implementation of Conway's Game of Life using JavaScript, Rust, WebAssembly, and WebGL.
+Implementation of Conway's Game of Life using JavaScript, Rust, WebAssembly.
 ([Demo](https://jellowfish.github.io/conway-wasm) | [Book](https://rustwasm.github.io/docs/book/))
