@@ -1,6 +1,10 @@
 mod utils;
 
 use wasm_bindgen::prelude::*;
+extern crate js_sys;
+
+extern crate fixedbitset;
+use fixedbitset::FixedBitSet;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -9,34 +13,22 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-#[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Cell {
-    Dead = 0,
-    Alive = 1,
-}
-
-#[wasm_bindgen]
 pub struct Universe {
     width: u32,
     height: u32,
-    cells: Vec<Cell>,
+    cells: FixedBitSet,
 }
-
-extern crate js_sys;
 
 #[wasm_bindgen]
 impl Universe {
     pub fn new(width: u32, height: u32) -> Self {
-        let cells = (0..width * height)
-            .map(|i| {
-                if js_sys::Math::random() < 0.5 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }
-            })
-            .collect();
+        let size = (width * height) as usize;
+        let mut cells = FixedBitSet::with_capacity(size);
+
+        for i in 0..size {
+            cells.set(i, js_sys::Math::random() < 0.5);
+        }
+
         Universe {
             width,
             height,
@@ -52,12 +44,8 @@ impl Universe {
         self.height
     }
 
-    pub fn cells(&self) -> *const Cell {
-        self.cells.as_ptr()
-    }
-
-    pub fn render(&self) -> String {
-        self.to_string()
+    pub fn cells(&self) -> *const u32 {
+        self.cells.as_slice().as_ptr()
     }
 
     pub fn tick(&mut self) {
@@ -67,22 +55,24 @@ impl Universe {
                 let idx = self.get_index(row, col);
                 let cell = self.cells[idx];
                 let live_neighbours = self.live_neighbour_count(row, col);
-                let next_cell = match (cell, live_neighbours) {
-                    // Rule 1: Any live cell with fewer than two live
-                    // neighbours dies, as if caused by underpopulation.
-                    (Cell::Alive, x) if x < 2 => Cell::Dead,
-                    // Rule 2: Any live cell with two or three live
-                    // neighbours lives on to the next generation.
-                    (Cell::Alive, 2) | (Cell::Alive, 3) => Cell::Alive,
-                    // Rule 3: Any live cell with more than three live
-                    // neighbours dies, as if caused by overpopulation.
-                    (Cell::Alive, x) if x > 3 => Cell::Dead,
-                    // Rule 4: Any dead cell with exactly three live
-                    // neighbours becomes a live cell, as if by reproduction.
-                    (Cell::Dead, 3) => Cell::Alive,
-                    (otherwise, _) => otherwise,
-                };
-                next[idx] = next_cell;
+                next.set(
+                    idx,
+                    match (cell, live_neighbours) {
+                        // Rule 1: Any live cell with fewer than two live
+                        // neighbours dies, as if caused by underpopulation.
+                        (true, x) if x < 2 => false,
+                        // Rule 2: Any live cell with two or three live
+                        // neighbours lives on to the next generation.
+                        (true, 2) | (true, 3) => true,
+                        // Rule 3: Any live cell with more than three live
+                        // neighbours dies, as if caused by overpopulation.
+                        (true, x) if x > 3 => false,
+                        // Rule 4: Any dead cell with exactly three live
+                        // neighbours becomes a live cell, as if by reproduction.
+                        (false, 3) => true,
+                        (otherwise, _) => otherwise,
+                    },
+                );
             }
         }
         self.cells = next;
@@ -106,20 +96,5 @@ impl Universe {
             }
         }
         cnt
-    }
-}
-
-use std::fmt;
-
-impl fmt::Display for Universe {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for line in self.cells.as_slice().chunks(self.width as usize) {
-            for &cell in line {
-                let symbol = if cell == Cell::Dead { '◻' } else { '◼' };
-                write!(f, "{}", symbol)?;
-            }
-            write!(f, "\n")?;
-        }
-        Ok(())
     }
 }
