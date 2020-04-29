@@ -69,11 +69,15 @@ const drawCells = () => {
     ctx.stroke();
 }
 
+const render = () => {
+    drawGrid();
+    drawCells();
+}
+
 let animationId = null;
 const renderLoop = () => {
     universe.tick();
-    drawGrid();
-    drawCells();
+    render();
     animationId = requestAnimationFrame(renderLoop);
 };
 
@@ -108,11 +112,12 @@ nextButton.textContent = "NEXT";
 nextButton.addEventListener("click", event => {
     stop();
     universe.tick();
-    drawGrid();
-    drawCells();
+    render();
 })
 
 canvas.addEventListener("click", event => {
+    stop();
+
     const boundingRect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / boundingRect.width;
     const scaleY = canvas.height / boundingRect.height;
@@ -124,18 +129,26 @@ canvas.addEventListener("click", event => {
     const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
 
     universe.toggle_cell(row, col);
-    drawGrid();
-    drawCells();
+    render();
 });
 
+const randButton = document.getElementById('rand');
+randButton.textContent = "RAND";
 
+randButton.addEventListener("click", event => {
+    stop();
+    universe.rand();
+    render();
+})
 
+const killButton = document.getElementById('kill');
+killButton.textContent = "KILL";
 
-
-
-
-
-
+killButton.addEventListener("click", event => {
+    stop();
+    universe.kill();
+    render();
+})
 
 
 // initial play

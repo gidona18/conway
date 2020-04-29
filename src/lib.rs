@@ -46,6 +46,17 @@ impl Universe {
         }
     }
 
+    pub fn rand(&mut self) {
+        let size = (self.width * self.height) as usize;
+        for i in 0..size {
+            self.cells.set(i, js_sys::Math::random() < 0.5);
+        }
+    }
+
+    pub fn kill(&mut self) {
+        self.cells.clear();
+    }
+
     pub fn get_width(&self) -> u32 {
         self.width
     }
