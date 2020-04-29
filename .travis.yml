@@ -12,6 +12,8 @@ cache:
     - $TRAVIS_HOME/.nvm
 
 matrix:
+  allow_failures:
+    - name: tests
   include:
     - name: pages
       rust: stable
@@ -33,3 +35,18 @@ matrix:
         github_token: $GITHUB_TOKEN
         local-dir: pages
         keep_history: false
+
+    - name: tests
+      rust: stable
+      env: RUST_BACKTRACE=1
+      install:
+        - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+        - source ~/.nvm/nvm.sh && nvm install node
+        - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+        - cargo install cargo-generate
+      script:
+        - wasm-pack test --node
+
+notifications:
+  email
+    on_success: never
