@@ -1,5 +1,5 @@
-import { memory } from "wasm-game-of-life/wasm_game_of_life_bg"
-import { Universe, Cell } from "wasm-game-of-life";
+import { memory } from "conway/conway_bg"
+import { Universe, Cell } from "conway";
 
 const CELL_SIZE = 4;  // px
 const GRID_COLOR = "#eee8d5";
@@ -7,13 +7,13 @@ const DEAD_COLOR = "#fdf6e3";
 const ALIVE_COLOR = "#268bd2";
 
 // make the universe
-const width = Math.floor((window.innerWidth * .75) / CELL_SIZE);
-const height = Math.floor((window.innerHeight * .75) / CELL_SIZE);
+const width = Math.floor((window.innerWidth * .50) / CELL_SIZE);
+const height = Math.floor((window.innerHeight * .50) / CELL_SIZE);
 const universe = Universe.new(width, height);
 
 
 // make the canvas, and add a 1px border around each cell
-const canvas = document.getElementById("game-of-life-canvas")
+const canvas = document.getElementById("conway-canvas")
 canvas.width = (CELL_SIZE + 1) * width + 1;;
 canvas.height = (CELL_SIZE + 1) * height + 1;;
 

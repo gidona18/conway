@@ -1,5 +1,5 @@
 [package]
-name = "wasm-game-of-life"
+name = "conway"
 version = "0.1.0"
 authors = ["Armando Herrera <mail@jellowfish.com>"]
 edition = "2018"
