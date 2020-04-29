@@ -1,22 +1,24 @@
 # This file is a template, and might need editing before it works on your project.
 image: rust:latest
 
+cache:
+  paths:
+    - .cargo
+    - .npm
+    - .nvm
+
+before_script:
+  - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+  - source ~/.nvm/nvm.sh && nvm install node
+  - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+  - cargo install cargo-generate
+
 pages:
   script:
-    #- curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-    #- cargo install cargo-generate
-    #- curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-    #- source ~/.nvm/nvm.sh
-    #- nvm install node
-    #- wasm-pack build
-    - ls
-    - cd www# && npm install
-    - ls
-    - ls ..
-    #- npm run build
-    #- mv ./dist/* ../public
-    
-
+    - wasm-pack build
+    - cd www && npm install
+    - npm run build
+    - mv ./dist ../public
   artifacts:
     paths:
       - public
