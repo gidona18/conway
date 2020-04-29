@@ -3,24 +3,26 @@ image: rust:latest
 
 cache:
   paths:
-    - ~/.cache/sccache
-    - ~/.cargo
-    - ~/.rustup
-    - ~/.npm
-    - ~/.nvm
+    #- ~/.cache/sccache
+    #- ~/.cargo
+    #- ~/.rustup
+    - $HOME/.npm
+    - $HOME/.nvm
 
 before_script:
+  - export HOME=`pwd`
   - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
   - source ~/.nvm/nvm.sh && nvm install node
-  - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-  - cargo install cargo-generate
+  #- curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+  #- cargo install cargo-generate
 
 pages:
   script:
-    - wasm-pack build
-    - cd www && npm install
-    - npm run build
-    - mv ./dist ../public
+    #- wasm-pack build
+    #- cd www && npm install
+    #- npm run build
+    #- mv ./dist ../public
+    - ls
   artifacts:
     paths:
       - public
