@@ -15,9 +15,11 @@ matrix:
   include:
     - name: pages
       rust: stable
-      before_script:
+      install:
         - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
         - source ~/.nvm/nvm.sh && nvm install node
+        - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+        - cargo install cargo-generate
       script:
         - wasm-pack build
         - cd www && npm install
