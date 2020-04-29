@@ -1,14 +1,15 @@
 import { memory } from "conway/conway_bg"
 import { Universe, Cell } from "conway";
 
-const CELL_SIZE = 8;  // px
+const SIZE = 96;
+const CELL_SIZE = Math.floor(Math.min(window.innerWidth, window.innerHeight) / (SIZE * 1.25));  // px
 const GRID_COLOR = "#eee8d5";
 const DEAD_COLOR = "#fdf6e3";
 const ALIVE_COLOR = "#268bd2";
 
 // make the universe
-const width = Math.floor((window.innerWidth * .75) / CELL_SIZE);
-const height = Math.floor((window.innerHeight * .75) / CELL_SIZE);
+const width = SIZE;
+const height = SIZE;
 const universe = Universe.new(width, height);
 
 
