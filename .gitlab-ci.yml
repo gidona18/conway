@@ -6,8 +6,8 @@ cache:
     #- ~/.cache/sccache
     #- ~/.cargo
     #- ~/.rustup
-    - $HOME/.npm
-    - $HOME/.nvm
+    - /cache/.npm
+    - /cache/.nvm
 
 before_script:
   - export HOME=/cache
