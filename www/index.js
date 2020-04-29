@@ -1,14 +1,14 @@
 import { memory } from "conway/conway_bg"
 import { Universe, Cell } from "conway";
 
-const CELL_SIZE = 4;  // px
+const CELL_SIZE = 8;  // px
 const GRID_COLOR = "#eee8d5";
 const DEAD_COLOR = "#fdf6e3";
 const ALIVE_COLOR = "#268bd2";
 
 // make the universe
-const width = Math.floor((window.innerWidth * .50) / CELL_SIZE);
-const height = Math.floor((window.innerHeight * .50) / CELL_SIZE);
+const width = Math.floor((window.innerWidth * .75) / CELL_SIZE);
+const height = Math.floor((window.innerHeight * .75) / CELL_SIZE);
 const universe = Universe.new(width, height);
 
 
@@ -112,4 +112,31 @@ nextButton.addEventListener("click", event => {
     drawCells();
 })
 
+canvas.addEventListener("click", event => {
+    const boundingRect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / boundingRect.width;
+    const scaleY = canvas.height / boundingRect.height;
+
+    const canvasLeft = (event.clientX - boundingRect.left) * scaleX;
+    const canvasTop = (event.clientY - boundingRect.top) * scaleY;
+
+    const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
+    const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
+
+    universe.toggle_cell(row, col);
+    drawGrid();
+    drawCells();
+});
+
+
+
+
+
+
+
+
+
+
+
+// initial play
 play();
