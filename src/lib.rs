@@ -25,6 +25,27 @@ pub struct Universe {
 
 #[wasm_bindgen]
 impl Universe {
+    pub fn new(width: u32, height: u32) -> Self {
+        let cells = (0..width * height)
+            .map(|i| {
+                if i % 2 == 0 || i % 7 == 0 {
+                    Cell::Alive
+                } else {
+                    Cell::Dead
+                }
+            })
+            .collect();
+        Universe {
+            width,
+            height,
+            cells,
+        }
+    }
+
+    pub fn render(&self) -> String {
+        self.to_string()
+    }
+
     pub fn tick(&mut self) {
         let mut next = self.cells.clone();
         for row in 0..self.height {
@@ -50,6 +71,7 @@ impl Universe {
                 next[idx] = next_cell;
             }
         }
+        self.cells = next;
     }
 
     fn get_index(&self, row: u32, col: u32) -> usize {
@@ -70,5 +92,20 @@ impl Universe {
             }
         }
         cnt
+    }
+}
+
+use std::fmt;
+
+impl fmt::Display for Universe {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for line in self.cells.as_slice().chunks(self.width as usize) {
+            for &cell in line {
+                let symbol = if cell == Cell::Dead { '◻' } else { '◼' };
+                write!(f, "{}", symbol)?;
+            }
+            write!(f, "\n")?;
+        }
+        Ok(())
     }
 }
