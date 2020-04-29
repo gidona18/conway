@@ -12,6 +12,7 @@ use conway::Universe;
 #[cfg(test)]
 pub fn input_spaceship() -> Universe {
     let mut universe = Universe::new(6,6);
+    universe.clear_cells();
     universe.set_cells(&[(1,2), (2,3), (3,1), (3,2), (3,3)]);
     universe
 }
@@ -19,6 +20,7 @@ pub fn input_spaceship() -> Universe {
 #[cfg(test)]
 pub fn expected_spaceship() -> Universe {
     let mut universe = Universe::new(6,6);
+    universe.clear_cells();
     universe.set_cells(&[(2,1), (2,3), (3,2), (3,3), (4,2)]);
     universe
 }

@@ -64,6 +64,10 @@ impl Universe {
         self.cells.as_slice().as_ptr()
     }
 
+    pub fn clear_cells(&mut self) {
+        self.cells.clear();
+    }
+
     pub fn tick(&mut self) {
         let mut next = self.cells.clone();
         for row in 0..self.height {
