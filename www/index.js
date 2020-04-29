@@ -150,6 +150,5 @@ killButton.addEventListener("click", event => {
     render();
 })
 
-
 // initial play
 play();
