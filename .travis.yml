@@ -12,8 +12,6 @@ cache:
     - $TRAVIS_HOME/.nvm
 
 matrix:
-  allow_failures:
-    - name: tests
   include:
     - name: pages
       rust: stable
@@ -31,7 +29,7 @@ matrix:
         - mv ./dist/* ../pages
       deploy:
         provider: pages
-        cleanup: false
+        skip_cleanup: true
         github_token: $GITHUB_TOKEN
         local-dir: pages
         keep_history: false
