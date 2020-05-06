@@ -18,7 +18,7 @@ matrix:
       install:
         - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
         - source ~/.nvm/nvm.sh && nvm install node
-        - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -y
+        - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
         - cargo install cargo-generate
       script:
         - mkdir -p pages
