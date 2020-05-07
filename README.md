@@ -1,12 +1,11 @@
-Conway's Game of Life
-=====================
-An implementation of Conway's Game of Life using JavaScript, Rust, WebAssembly.
+<h1 align="center">Conway's Game of Life</h1>
 
-<div align="center">
+<p align="center">
     <a href="https://jellowfish.github.io/conway"><img src="./res/gol.gif"/></a>
-</div>
+</p>
 
-<table align="center">
-    <td><a href="https://jellowfish.github.io/conway">▓▒░ Demo ░▒▓</a></td>
-    <td><a href="https://rustwasm.github.io/docs/book">▓▒░ Book ░▒▓</a></td>
-</table>
+<p align="center">An implementation of Conway's Game of Life using JavaScript, Rust, WebAssembly.</p>
+
+<p align="center"><a href="https://jellowfish.github.io/conway">▓▒░ Demo ░▒▓</a></p>
+<p align="center"><a href="https://rustwasm.github.io/docs/book">▓▒░ Book ░▒▓</a></p>
+
